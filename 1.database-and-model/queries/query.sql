@@ -43,7 +43,7 @@ AND u.user_id = $1;
 
 -- name: GetUserSets :many
 -- get a particular user info, exercises and workouts
-SELECT u.user_id, w.workout_id, w.start_date, s.set_id, w.Weight
+SELECT u.user_id, w.workout_id, w.start_date, s.set_id, s.weight
 FROM 	gowebapp.users u,
 	gowebapp.workouts w,
 	gowebapp.sets s
