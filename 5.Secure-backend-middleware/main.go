@@ -41,7 +41,7 @@ var (
 
 // it renders file and push data (d) into template to be rendered
 func renderFiles(tmpl string, w http.ResponseWriter, d interface{}) {
-	t, err := template.ParseFS(templEmbed, fmt.Sprint("tmpl/%s.html", tmpl))
+	t, err := template.ParseFS(templEmbed, fmt.Sprintf("tmpl/%s.html", tmpl))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -178,13 +178,14 @@ func main() {
 }
 
 func initDatabase() {
-	dbURI := fmt.Sprint("postgres://%s:%s@%s:%d/%s?sslmode=disable",
-		GetAsString("DB_USER", "postgres"),
-		GetAsString("DB_PASS", "mysecretpass"),
+	dbURI := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		GetAsString("DB_USER", "postgres_usr"),
+		GetAsString("DB_PASS", "the_passwd"),
 		GetAsString("DB_HOST", "localhost"),
 		GetAsInt("DB_PORT", 5432),
-		GetAsString("DB_NAME", "postgres"),
+		GetAsString("DB_NAME", "postgres_db"),
 	)
+	log.Println("|...| dbURI:", dbURI)
 
 	// open database
 	db, err := sql.Open("postgres", dbURI)
@@ -201,10 +202,6 @@ func initDatabase() {
 
 	ctx := context.Background()
 	createUserDb(ctx)
-
-	if err != nil {
-		os.Exit(1)
-	}
 }
 
 func createUserDb(ctx context.Context) {
